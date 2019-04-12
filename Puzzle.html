@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
+    <link rel="stylesheet" href="stylesheets/style.css" />
+    <link href="stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link href="stylesheets/dashboard.css" rel="stylesheet">
+    <title>拼圖</title>
+    <style>
+body{
+    position: absolute;
+}
+
+        #ground{
+            height: 400px;
+            width: 400px;
+            margin: auto;
+            margin-bottom: 10px;
+            margin-top: 50px;
+            /*background-image:url("image/cat.jpg"); */
+            background-size: 400px 400px;
+        }
+        img {
+            height: 400px;
+            width: 400px;
+        }
+
+    </style>
+</head>
+
+
+    <div id="ground">
+        <div class="a">
+        <div id="i1" style="position:absolute;    clip:rect(0   100px   100px   0) ">
+            <img src="image/cat.jpg"></div>
+        <div id="i2" style="position:absolute;    clip:rect(0   200px   100px   100px) ">
+            <img src="image/cat.jpg"></div>
+        <div id="i3" style="position:absolute;    clip:rect(0   300px   100px   200px) ">
+            <img src="image/cat.jpg"></div>
+        <div id="i4" style="position:absolute;    clip:rect(0   400px   100px   300px) ">
+            <img src="image/cat.jpg"></div>
+    </div>
+        <div class="b">
+        <div id="i5" style="position:absolute;    clip:rect(100px   100px   200px   0) ">
+            <img src="image/cat.jpg"></div>
+        <div id="i6" style="position:absolute;    clip:rect(100px   200px   200px   100px) ">
+            <img src="image/cat.jpg"></div>
+        <div id="i7" style="position:absolute;    clip:rect(100px   300px   200px   200px) ">
+            <img src="image/cat.jpg"></div>
+        <div id="i8" style="position:absolute;    clip:rect(100px   400px   200px   300px) ">
+            <img src="image/cat.jpg"></div>
+    </div>
+        <div class="c">
+        <div id="i9" style="position:absolute;    clip:rect(200px   100px   300px   0) ">
+            <img src="image/cat.jpg"></div>
+        <div id="i10" style="position:absolute;    clip:rect(200px   200px   300px   100px) ">
+            <img src="image/cat.jpg"></div>
+        <div id="i11" style="position:absolute;    clip:rect(200px   300px   300px   200px) ">
+            <img src="image/cat.jpg"></div>
+        <div id="i12" style="position:absolute;    clip:rect(200px   400px   300px   300px) ">
+            <img src="image/cat.jpg"></div>
+    </div>
+        <div class="d">
+        <div id="i13" style="position:absolute;    clip:rect(300px   100px   400px   0) ">
+            <img src="image/cat.jpg"></div>
+        <div id="i14" style="position:absolute;    clip:rect(300px   200px   400px   100px) ">
+            <img src="image/cat.jpg"></div>
+        <div id="i15" style="position:absolute;    clip:rect(300px   300px   400px   200px) ">
+            <img src="image/cat.jpg"></div>
+        <div id="i16" style="position:absolute;    clip:rect(300px   400px   400px   300px) ">
+            <img src="image/cat.jpg"></div>
+    </div>
+    </div>
+    
+    <button type="button" id="begin" class="d-block m-auto">開始</button>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        n = 0;
+        document.getElementById("begin").onclick = function(){
+        getElementById("i"+Math.floor(Math.random() * 16));
+        }
+
+
+    </script>
+</body>
+
+</html>

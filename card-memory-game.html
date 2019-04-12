@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>翻牌記憶遊戲</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
+    <link rel="stylesheet" href="stylesheets/style.css" />
+    <link href="stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link href="stylesheets/dashboard.css" rel="stylesheet">
+    <style>
+        body {
+            text-align: center;
+        }
+
+        #game {
+            width: 502px;
+            height: 462px;
+            margin: 0 auto;
+            position: relative;
+            display: -webkit-box;
+            -webkit-box-pack: center;
+            -webkit-box-align: center;
+        }
+
+        #cards {
+            width: 380px;
+            height: 400px;
+            position: relative;
+            margin: 30px auto;
+        }
+
+        .card {
+            width: 80px;
+            height: 120px;
+            position: absolute;
+        }
+
+        .face {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            position: absolute;
+            backface-visibility: hidden;
+            transition: all .3s;
+        }
+
+        .front {
+            background: #999 url("./image/deck.png")0 -480px;
+            z-index: 10;
+        }
+
+        .back {
+            background: #efefef url("./image/deck.png");
+            -webkit-transform-rotateY: (-180deg);
+            z-index: 8;
+        }
+        
+        .card-flipped .front {
+            /*保证牌底在牌面下面，z-index值切换为小值*/
+            z-index: 8;
+            transform: rotateY(180deg);
+        }
+
+        .card-flipped .back {
+            /*保证牌底在牌面上面，z-index值切换为大值*/
+            z-index: 10;
+            /*前面牌面已经翻过去，现在返回来*/
+            transform: rotateY(0deg);
+        }
+
+        /*移除牌*/
+        .card-removed {
+            opacity: 0;
+        }
+
+        .face:hover {
+            box-shadow: 0 0 40px #aaa;
+
+        }
+
+        .cardAJ {
+            background-position: -800px 0;
+        }
+
+        .cardAQ {
+            background-position: -880px 0;
+        }
+
+        .cardAK {
+            background-position: -960px 0;
+        }
+
+        .cardBJ {
+            background-position: -800px -120px;
+        }
+
+        .cardBQ {
+            background-position: -880px -120px;
+        }
+
+        .cardBK {
+            background-position: -960px -120px;
+        }
+
+        
+    </style>
+</head>
+
+<body>
+    <section id="game">
+        <div id="cards">
+            <div class="card">
+                <div class="face front"></div>
+                <div class="face back"></div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script>
+        var neusoft = {};
+        neusoft.matchingGame = {};
+        neusoft.matchingGame.cardWidth = 80;//牌宽
+        neusoft.matchingGame.cardHeight = 120;
+        neusoft.matchingGame.deck =
+            [
+                "cardAK", "cardAK",
+                "cardAQ", "cardAQ",
+                "cardAJ", "cardAJ",
+                "cardBK", "cardBK",
+                "cardBQ", "cardBQ",
+                "cardBJ", "cardBJ"
+            ]
+
+        $(function () {
+            //实现随机洗牌
+            neusoft.matchingGame.deck.sort(shuffle);
+            //alert(neusoft.matchingGame.deck);
+            var $card = $(".card");
+            for (var i = 0; i < 11; i++) {
+                $card.clone().appendTo($("#cards"));
+            }
+            //对每张牌进行设置
+            $(".card").each(function (index) {
+                //调整坐标
+                $(this).css({
+                    "left": (neusoft.matchingGame.cardWidth + 20) * (index % 4) + "px",
+                    "top": (neusoft.matchingGame.cardHeight + 20) * Math.floor(index / 4) + "px"
+                });
+                //吐出一个牌号
+                var pattern = neusoft.matchingGame.deck.pop();
+                //暂存牌号
+                $(this).data("pattern", pattern);
+                //把其翻牌后的对应牌面附加上去
+                $(this).find(".back").addClass(pattern);
+                //点击牌的功能函数挂接
+                $(this).click(selectCard);
+            });
+        });
+        
+        //随机排序函数，返回-1或1
+        function shuffle() {
+            //Math.random能返回0~1之间的数
+            return Math.random() > 0.5 ? -1 : 1
+        }
+        //  翻牌功能的实现
+        function selectCard() {
+            var $fcard = $(".card-flipped");
+            //翻了两张牌后退出翻牌
+            if ($fcard.length > 1) {
+                return;
+            }
+            //alert($(this).data("pattern"));
+            $(this).addClass("card-flipped");
+            //    若翻动了两张牌，检测一致性
+            var $fcards = $(".card-flipped");
+            if ($fcards.length == 2) {
+                // checkPattern($fcards);
+                setTimeout(function () {
+                    checkPattern($fcards);
+                }, 700);
+            }
+        }
+        //检测2张牌是否一致
+        function checkPattern(cards) {
+            var pattern1 = $(cards[0]).data("pattern");
+            var pattern2 = $(cards[1]).data("pattern");
+            //alert(pattern1);
+            //alert(pattern2);
+            //    if(pattern1!=pattern2)
+            //    {
+            //        $(cards).removeClass("card-flipped")
+            //    }
+            //    else
+            //    {
+            //        $(cards).addClass("card-removed")
+            //        $(cards).removeClass("card-flipped")
+            //    }
+            $(cards).removeClass("card-flipped");
+            if (pattern1 == pattern2) {
+                //        .bind
+                $(cards).addClass("card-removed")
+                    .bind("webkitTransitionEnd", function () {
+                        $(this).remove();
+                    });
+            }
+        }
+    </script>
+</body>
+
+</html>
